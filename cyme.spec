@@ -7,7 +7,7 @@
 #
 Name     : cyme
 Version  : 2.0.0
-Release  : 1
+Release  : 2
 URL      : https://github.com/tuna-f1sh/cyme/archive/refs/tags/v2.0.0.tar.gz
 Source0  : https://github.com/tuna-f1sh/cyme/archive/refs/tags/v2.0.0.tar.gz
 Source1  : http://localhost/cgit/vendor/cyme/snapshot/cyme-2024-10-22-15-25-41.tar.gz
