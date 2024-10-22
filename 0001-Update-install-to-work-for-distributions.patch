@@ -1,0 +1,55 @@
+From 7d1ce2c7e393c4417dc54eea0cc43d53e79a7a29 Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Tue, 22 Oct 2024 10:52:33 -0700
+Subject: [PATCH] Update install to work for distributions
+
+---
+ Makefile   |  2 +-
+ install.sh | 13 +++++--------
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 8efcb44..2438462 100644
+--- a/Makefile
++++ b/Makefile
+@@ -11,7 +11,7 @@ DOCS = doc/_$(PROJECT_NAME) doc/$(PROJECT_NAME).1 doc/$(PROJECT_NAME).bash doc/c
+ release: $(RELEASE_BIN)
+ 
+ install:
+-	$(shell ./install.sh)
++	./install.sh
+ 
+ generated: $(DOCS)
+ 
+diff --git a/install.sh b/install.sh
+index c166a2d..5216155 100755
+--- a/install.sh
++++ b/install.sh
+@@ -7,6 +7,8 @@ function cargo_project_name() {
+ bin_name=$(cargo_project_name)
+ # with remaining args
+ cargo install --locked "$@" --path .
++mkdir -p "${DESTDIR}/usr/bin/"
++cp -v "${HOME}/.cargo/bin/"* "${DESTDIR}/usr/bin/"
+ 
+ # supporting stuff
+ if [[ "$OSTYPE" == "darwin"* ]]; then
+@@ -18,12 +20,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
+   fi
+   cp -v ./doc/"${bin_name}".1 /usr/local/share/man/man1/
+ elif [[ "$OSTYPE" == "linux"* ]]; then
+-  if [[ -d /usr/share/bash-completion/completions ]]; then
+-    cp -v ./doc/"${bin_name}".bash /usr/share/bash-completion/completions/
+-  fi
+-  if [[ -d /usr/share/zsh/site-functions ]]; then
+-    cp -v ./doc/_"${bin_name}" /usr/share/zsh/site-functions/
+-  fi
+-  # install man page
+-  cp -v ./doc/"${bin_name}".1 /usr/share/man/man1/
++  install -D -m 0644 ./doc/"${bin_name}".bash "${DESTDIR}/usr/share/bash-completion/completions/${bin_name}.bash"
++  install -D -m 0644 ./doc/_"${bin_name}" "${DESTDIR}/usr/share/zsh/site-functions/_${bin_name}"
++  install -D -m 0644 ./doc/"${bin_name}".1 "${DESTDIR}/usr/share/man/man1/${bin_name}.1"
+ fi
+-- 
+2.47.0
+
