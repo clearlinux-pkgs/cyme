@@ -1,0 +1,10 @@
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/tuna-f1sh/nusb?branch=cyme"]
+git = "https://github.com/tuna-f1sh/nusb"
+branch = "cyme"
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
